@@ -1,0 +1,37 @@
+#include <vector>
+#include <algorithm>
+#include <cstring>
+
+class Solution {
+public:
+    int dp[50001];
+
+    int findMaxProfit(std::vector<std::vector<int>>& jobs, std::vector<int>& start, int n, int id) {
+        if (id == n)
+            return 0;
+
+        if (dp[id] != -1)
+            return dp[id];
+
+        // Correct way to find the next index using lower_bound
+        auto nextIndex = std::lower_bound(start.begin(), start.end(), jobs[id][1]) - start.begin();
+
+        int maxProfit = std::max(findMaxProfit(jobs, start, n, id + 1), jobs[id][2] + findMaxProfit(jobs, start, n, nextIndex));
+        return dp[id] = maxProfit;
+    }
+
+    int jobScheduling(std::vector<int>& startTime, std::vector<int>& endTime, std::vector<int>& profit) {
+        std::vector<std::vector<int>> jobs;
+        std::memset(dp, -1, sizeof(dp));
+
+        for (int i = 0; i < profit.size(); i++) {
+            jobs.push_back({startTime[i], endTime[i], profit[i]});
+        }
+        std::sort(jobs.begin(), jobs.end());
+
+        for (int i = 0; i < profit.size(); i++) {
+            startTime[i] = jobs[i][0];
+        }
+        return findMaxProfit(jobs, startTime, profit.size(), 0);
+    }
+};
