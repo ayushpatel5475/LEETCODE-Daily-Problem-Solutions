@@ -1,0 +1,15 @@
+class Solution {
+public:
+    bool halvesAreAlike(string s) {
+       unordered_set<char> vowels = {'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'}; 
+      
+        int vowelBalance = 0;
+   int midPoint = s.size() / 2;
+
+        for (int i = 0; i < midPoint; ++i) {
+            vowelBalance += vowels.count(s[i]);
+            vowelBalance -= vowels.count(s[i + midPoint]);
+        }
+        return vowelBalance == 0;
+    }
+};
