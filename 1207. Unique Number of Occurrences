@@ -1,0 +1,26 @@
+class Solution {
+public:
+    bool uniqueOccurrences(vector<int>& arr) {
+        unordered_map<int, int> frequencyMap;
+      
+        for (int element : arr) {
+            ++frequencyMap[element];
+        }
+      
+        unordered_set<int> occurrencesSet;
+      
+        for (auto& keyValue : frequencyMap) {
+            int occurrence = keyValue.second;
+           
+            if (occurrencesSet.count(occurrence)) {
+              //present already
+                return false;
+            }
+            
+            occurrencesSet.insert(occurrence);
+        }
+      
+       //if unique
+        return true;
+    }
+};
